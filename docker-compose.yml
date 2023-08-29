@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  app1:
+    # Берем Dockerfile из каталога app
+    # build: ./app1
+    build:
+      context: ./app1
+    # Запускаем тестовый сервер
+    command: python3 manage.py runserver 0.0.0.0:8000
+    # куда будут помещены данные из каталога app
+    volumes:
+      - ./app1/:/usr/src/app/
+    # Открываем порт 8000 внутри и снаружи
+    ports:
+      - "8000:8000"
+    # Файл содержащий переменные для контейнера
+    # env_file:
+    #   - ./.env1.dev
+  app2:
+    # Берем Dockerfile из каталога app2
+    # build: ./app2
+    build:
+      context: ./app2
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+    environment: 
+      - FLASK_APP=main.py
+      - FLASK_RUN_HOST=0.0.0.0
+    # Запускаем тестовый сервер
+    # command: python ./app2/main.py
+    command: flask run
+    # command: python3 main.py
+    # куда будут помещены данные из каталога app
+    volumes:
+      - ./app2/:/usr/src/app/
+    # Открываем порт 5000 внутри и снаружи
+    ports:
+     - "5000:5000"
+  app3:
+    # Берем Dockerfile из каталога app3
+    # build: ./app3
+    build:
+      context: ./app3
+    depends_on: 
+      - rabbitmq
+    restart: on-failure
+    
+    # Запускаем тестовый сервер
+    command: python3 main.py
+    # куда будут помещены данные из каталога app
+    volumes:
+      - ./app3/:/usr/src/app/
+  rabbitmq:
+    image: rabbitmq:3.9-management-alpine
+    hostname: rabbitmq
+    restart: always
+    # environment:
+    #  - RABBITMQ_DEFAULT_USER=rmuser
+    #  - RABBITMQ_DEFAULT_PASS=rmpassword
+    #  - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq/data
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "hhtp://localhost:15672" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+volumes:
+  rebbitmq:
+ 

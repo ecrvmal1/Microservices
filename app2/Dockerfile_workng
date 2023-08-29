@@ -1,0 +1,21 @@
+# FROM ubuntu:20.04
+# FROM debian:stable-slim
+FROM fnndsc/ubuntu-python3
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+WORKDIR /usr/src/app/
+
+COPY requirements.txt .
+
+# RUN apk update 
+# RUN set -xe
+RUN apt-get update
+# RUN apt-get install python3.8.12 -y 
+# RUN apt-get install python3-pip -y
+# RUN apt update 
+# RUN apt install python3.8 -y
+# RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+RUN python --version
+COPY . .
+
