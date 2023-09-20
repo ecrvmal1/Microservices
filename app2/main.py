@@ -24,6 +24,15 @@ def index():
 
 @app.route('/sale/', methods=['POST'])
 def sale():
+
+    """
+    The sale function is used to create a new sale record in the database.
+    It takes two parameters: phone and price. The phone parameter is the
+    phone number of the customer who made a purchase, while price is how much
+    the customer paid for their purchase.
+
+    :return: A response object that contains the status code and a json string
+    """
     data = request.form
     phone = data['phone']
     price = data['price']
@@ -42,6 +51,15 @@ def sale():
 
 @app.route('/repair/', methods=['POST'])
 def repair():
+
+    """
+    The repair function is used to repair a phone.
+        It takes the following parameters:
+            - phone (string): The name of the phone to be repaired.
+            - price (int): The price of repairing this particular model.
+
+    :return: The status of the repair
+    """
     data = request.form
     phone = data['phone']
     price = data['price']
@@ -72,6 +90,14 @@ def repair():
 
 @app.route('/change/', methods=['POST'])
 def change_status():
+    """
+    The change_status function is used to change the status of a user in the database.
+    It takes two parameters: phone and status. The phone parameter is used to identify
+    which user's status should be changed, while the status parameter indicates what
+    that new value should be.
+
+    :return: A json object with the key status and value ok
+    """
     data = request.form
     phone = data['phone']
     status = data['status']

@@ -1,25 +1,41 @@
-Article
+# ReadMe for running RabbitMQ in containers
+
+###Article
+```shell
 https://habr.com/ru/companies/southbridge/articles/704208/
+```
 
 
-run:
+
+## Run Container:
+```shell
 docker-compose up -d
+```
 
-Войдём в контейнер через RabbitMQ
+## Войдём в контейнер через RabbitMQ
+```shell
 docker-compose exec rabbitmq bash
+```
 
 
-down:
+
+## Container down:
+```shell
 docker-compose down
+```
 
-container re-create
+## Container re-create:
+```shell
 rabbitmq_slurm kilex$ docker-compose up -d
+```
 
 
-docker-compose.yaml
-version: "2.1"
-services:
-  rabbitmq:
+### Docker-compose.yaml  file
+
+docker-compose.yaml 
+version: "2.1"    
+services:     
+  rabbitmq:  
     image: rabbitmq:3.10.7-management
     hostname: rabbitmq
     restart: always
